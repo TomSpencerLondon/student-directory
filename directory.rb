@@ -49,15 +49,16 @@ def print_header
 end
 
 def print(students)
-  # students.map{|item| item.values}.flatten.select do |name|
-  # #if name.to_s.chars.first == "A"
+  students.map{|item| item.values}.flatten.select do |name|
+  if name.to_s.chars.first == "A"
   # if name.length < 12 && name != :november
-  # puts name
-  # end
-students.each.with_index do |student, index|
-    puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  puts name
   end
-#
+end
+# students.each.with_index do |student, index|
+#     puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+#   end
+# #
 # count_student = students.length
 # index = 0
 # while count_student > 0
