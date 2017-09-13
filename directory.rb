@@ -18,17 +18,22 @@ def input_students
   students
 end
 
-
-
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
 end
 
 def print(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  students.map{|item| item.values}.flatten.select do |name|
+  #if name.to_s.chars.first == "A"
+  if name.length < 12 && name != :november
+  puts name
   end
+end
+
+# each.with_index(1) do |student, index|
+#     puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+#   end
 end
 
 def print_footer(students)
