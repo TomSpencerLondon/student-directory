@@ -1,20 +1,23 @@
+  @students = []
+  @letter = ""
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   #create an empty array
-  students = []
+
   #get the first name
   name = gets.chomp
   #while the name is not empty, repeat this code
   while !name.empty? do
     #add the student hash to the array
-    students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: :november}
+    puts "Now we have #{@students.count} students"
     #get another name from the user
     name = gets.chomp
   end
   #returns the students array
-  students
+  @students
   # Asking if they want to filter the names by the first letter
   puts "Do you want to see the students with a name that starts with a specific letter?"
   puts "Please respond Yes or No."
@@ -27,36 +30,48 @@ def input_students
     user_response = gets.chomp
   end
 
-  return students if user_response.downcase == "no"
+  return @students if user_response.downcase == "no"
 
   puts "Which letter?" if user_response.downcase == "yes"
 
-  letter = gets.chomp
+  @letter = gets.chomp
 
-  while (letter.length != 1 || letter[/[a-z]|[A-Z]/] == nil) do
+  while (@letter.length != 1 || @letter[/[a-z]|[A-Z]/] == nil) do
     puts "Only ONE letter of the ALPHABET is accepted "
     puts "No other character is allowed "
-    letter = gets.chomp
+    @letter = gets.chomp
     @letter = letter.downcase
 end
 
 # students.select{ |x| x[:name][0].downcase == letter.downcase}
 
-students
+@students
+p @letter
 end
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
 end
 
-def print(students)
-  students.map{|item| item.values}.flatten.select do |name|
-  if name.to_s.chars.first == "A"
-  # if name.length < 12 && name != :november
-  puts name
-  end
+def print_students_list
+  selected = @students.map{|item| item.values}.flatten.select{ |chosen| chosen.to_s.chars.first.downcase == @letter.downcase }
+p selected
+#   # map{|item| item.values}.flatten.select do |name|
+#   # if name.to_s.chars.first.downcase == @letter
+#   # # if name.length < 12 && name != :november
+#   # puts name
+#   # end
+# end
+  index = 0
+countStudent = selected.length
+  puts "The students beginning with #{@letter} are:"
+while countStudent > 0
+  puts "#{selected[index]}"
+  countStudent = countStudent - 1
+  index = index + 1
 end
 end
+
 # students.each.with_index do |student, index|
 #     puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
 #   end
@@ -71,11 +86,11 @@ end
 # end
 
 
-def print_footer(students)
- puts "Overall, we have #{students.count} great students"
+def print_footer
+ puts "Overall, we have #{@students.count} great students"
 end
 
 students = input_students
 print_header
-print(students)
-print_footer(students)
+print_students_list
+print_footer
