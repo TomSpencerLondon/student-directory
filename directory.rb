@@ -82,6 +82,7 @@ else
   while count_student > 0
   newIndex = "#{index}".to_i
   puts "#{index+1}. #{@students[newIndex][:name]} (#{@students[newIndex][:cohort]} cohort)"
+  puts "Born in: #{@students[newIndex][:birthplace]}. Height: #{@students[newIndex][:height]}. Hobbies: #{@students[newIndex][:hobbies]}"
   count_student = count_student - 1
   index = index + 1
   end
