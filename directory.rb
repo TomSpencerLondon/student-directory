@@ -1,5 +1,6 @@
   @students = []
   @letter = ""
+  @user_response = ""
   @user_response_final = ""
 
 def input_students
@@ -12,29 +13,27 @@ def input_students
   #while the name is not empty, repeat this code
   while !name.empty? do
     #add the student hash to the array
-    @students << {name: name, cohort: :november}
-    @students << {name: name, cohort: :november, hobbies: :coding, birthplace: :London, :height :tall}
+    @students << {name: name, cohort: :november, hobbies: :music, birthplace: :London, height: 1.90}
     puts "Now we have #{@students.count} students"
     #get another name from the user
     name = gets.chomp
   end
-  #returns the students array
-  @students
+
   # Asking if they want to filter the names by the first letter
   puts "Do you want to see the students with a name that starts with a specific letter?"
   puts "Please respond Yes or No."
-  user_response = gets.chomp
+  @user_response = gets.chomp
 
-  while (user_response.downcase.match(/^[yes|no]+$/)) == nil do
+  while (@user_response.downcase.match(/^[yes|no]+$/)) == nil do
     puts "Your response was #{user_response}"
     puts "Please answer Yes or No. No other resonse is accepted"
-    puts user_response.downcase.chomp =~ /yes\b|no/
-    @user_response_final = gets.chomp
+    puts @user_response.downcase.chomp =~ /yes\b|no/
+    @user_response = gets.chomp
   end
 
-  return @students if @user_response_final.downcase == "no"
-
-  puts "Which letter?" if @user_response_final.downcase == "yes"
+  # return @students if @user_response.downcase == "no"
+  return @students if @user_response.downcase == "no"
+  puts "Which letter?" if @user_response.downcase == "yes"
 
   @letter = gets.chomp
 
@@ -42,14 +41,17 @@ def input_students
     puts "Only ONE letter of the ALPHABET is accepted "
     puts "No other character is allowed "
     @letter = gets.chomp
-    @letter = letter.downcase
-end
+    @letter = @letter.downcase
+  end
 
 # students.select{ |x| x[:name][0].downcase == letter.downcase}
 
-@students
 p @letter
+p @user_response_final = @user_response.downcase
+#returns the students array
+
 end
+
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
@@ -65,19 +67,31 @@ p selected
 #   # puts name
 #   # end
 # end
-  index = 0
-countStudent = selected.length
-  puts "The students beginning with #{@letter} are:"
-while countStudent > 0
-  puts "#{selected[index]}"
-  puts "#{selected[]}"
-  countStudent = countStudent - 1
-  index = index + 1
-end
+    index = 0
+  countStudent = selected.length
+    puts "The students beginning with #{@letter} are:"
+  while countStudent > 0
+    puts "#{selected[index]}"
+    countStudent = countStudent - 1
+    index = index + 1
+  end
 
 else
-  @students.each_with_index do |student, index|
-    puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  count_student = @students.length
+  index = 0
+  while count_student > 0
+  newIndex = "#{index}".to_i
+  puts "#{index+1}. #{@students[newIndex][:name]} (#{@students[newIndex][:cohort]} cohort)"
+  count_student = count_student - 1
+  index = index + 1
+  end
+
+  # @students.each.with_index do |student, index|
+  #   puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  # end
+
+end
+
 end
 
 # students.each.with_index do |student, index|
