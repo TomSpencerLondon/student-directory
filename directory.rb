@@ -1,5 +1,6 @@
   @students = []
   @letter = ""
+  @user_response_final = ""
 
 def input_students
   puts "Please enter the names of the students"
@@ -12,6 +13,7 @@ def input_students
   while !name.empty? do
     #add the student hash to the array
     @students << {name: name, cohort: :november}
+    @students << {name: name, cohort: :november, hobbies: :coding, birthplace: :London, :height :tall}
     puts "Now we have #{@students.count} students"
     #get another name from the user
     name = gets.chomp
@@ -26,13 +28,13 @@ def input_students
   while (user_response.downcase.match(/^[yes|no]+$/)) == nil do
     puts "Your response was #{user_response}"
     puts "Please answer Yes or No. No other resonse is accepted"
-    puts user_response.downcase.chomp =~ /ys\b|no/
-    user_response = gets.chomp
+    puts user_response.downcase.chomp =~ /yes\b|no/
+    @user_response_final = gets.chomp
   end
 
-  return @students if user_response.downcase == "no"
+  return @students if @user_response_final.downcase == "no"
 
-  puts "Which letter?" if user_response.downcase == "yes"
+  puts "Which letter?" if @user_response_final.downcase == "yes"
 
   @letter = gets.chomp
 
@@ -54,6 +56,7 @@ def print_header
 end
 
 def print_students_list
+if @user_response_final == "yes"
   selected = @students.map{|item| item.values}.flatten.select{ |chosen| chosen.to_s.chars.first.downcase == @letter.downcase }
 p selected
 #   # map{|item| item.values}.flatten.select do |name|
@@ -67,9 +70,14 @@ countStudent = selected.length
   puts "The students beginning with #{@letter} are:"
 while countStudent > 0
   puts "#{selected[index]}"
+  puts "#{selected[]}"
   countStudent = countStudent - 1
   index = index + 1
 end
+
+else
+  @students.each_with_index do |student, index|
+    puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
 end
 
 # students.each.with_index do |student, index|
