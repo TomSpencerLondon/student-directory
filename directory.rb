@@ -15,30 +15,31 @@ def input_students
   end
   #returns the students array
   students
-#   # Asking if they want to filter the names by the first letter
-#   puts "Do you want to see the students with a name that starts with a specific letter?"
-#   puts "Please respond Yes or No."
-#   user_response = gets.chomp
-#
-#   while (user_response.downcase.match(/^[yes|no]+$/)) == nil do
-#     puts "Your response was #{user_response}"
-#     puts "Please answer Yes or No. No other resonse is accepted"
-#     puts user_response.downcase.chomp =~ /ys\b|no/
-#     user_response = gets.chomp
-#   end
-#
-#   return students if user_response.downcase == "no"
-#
-#   puts "Which letter?" if user_response.downcase == "yes"
-#
-#   letter = gets.chomp
-#
-#   while (letter.length != 1 || letter[/[a-z]|[A-Z]/] == nil) do
-#     puts "Only ONE letter of the ALPHABET is accepted "
-#     puts "No other character is allowed "
-#     letter = gets.chomp
-# end
-#
+  # Asking if they want to filter the names by the first letter
+  puts "Do you want to see the students with a name that starts with a specific letter?"
+  puts "Please respond Yes or No."
+  user_response = gets.chomp
+
+  while (user_response.downcase.match(/^[yes|no]+$/)) == nil do
+    puts "Your response was #{user_response}"
+    puts "Please answer Yes or No. No other resonse is accepted"
+    puts user_response.downcase.chomp =~ /ys\b|no/
+    user_response = gets.chomp
+  end
+
+  return students if user_response.downcase == "no"
+
+  puts "Which letter?" if user_response.downcase == "yes"
+
+  letter = gets.chomp
+
+  while (letter.length != 1 || letter[/[a-z]|[A-Z]/] == nil) do
+    puts "Only ONE letter of the ALPHABET is accepted "
+    puts "No other character is allowed "
+    letter = gets.chomp
+    @letter = letter.downcase
+end
+
 # students.select{ |x| x[:name][0].downcase == letter.downcase}
 
 students
@@ -55,6 +56,7 @@ def print(students)
   puts name
   end
 end
+end
 # students.each.with_index do |student, index|
 #     puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
 #   end
@@ -68,7 +70,6 @@ end
 #   index += 1
 # end
 
-end
 
 def print_footer(students)
  puts "Overall, we have #{students.count} great students"
