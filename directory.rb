@@ -1,3 +1,5 @@
+require "pry"
+
   @students = []
   @letter = ""
   @user_response = ""
@@ -59,22 +61,30 @@ end
 
 def print_students_list
 if @user_response_final == "yes"
-  selected = @students.map{|item| item.values}.flatten.select{ |chosen| chosen.to_s.chars.first.downcase == @letter.downcase }
-p selected
+  # selected = @students.map{|item| item.values}.flatten.select{ |chosen| chosen.to_s.chars.first.downcase == @letter.downcase }
+
+selected = @students.select{|hash| hash[:name].chars.first.downcase == @letter.downcase}
+
+selected.each.with_index(1) do |item, index|
+  puts "#{index}. #{item[:name]} (#{item[:cohort]} cohort)"
+  puts "Born in: #{item[:birthplace]}. Hobbies: #{item[:hobbies]}. Height: #{item[:height]}"
+end
+
+
 #   # map{|item| item.values}.flatten.select do |name|
 #   # if name.to_s.chars.first.downcase == @letter
 #   # # if name.length < 12 && name != :november
 #   # puts name
 #   # end
 # end
-    index = 0
-  countStudent = selected.length
-    puts "The students beginning with #{@letter} are:"
-  while countStudent > 0
-    puts "#{selected[index]}"
-    countStudent = countStudent - 1
-    index = index + 1
-  end
+  #   index = 0
+  # countStudent = selected.length
+  #   puts "The students beginning with #{@letter} are:"
+  # while countStudent > 0
+  #   puts "#{selected[index]}"
+  #   countStudent = countStudent - 1
+  #   index = index + 1
+  # end
 
 else
   count_student = @students.length
