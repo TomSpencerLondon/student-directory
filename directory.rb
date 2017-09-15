@@ -11,18 +11,18 @@ def input_students
   #create an empty array
 
   #get the first name
-  name = gets.chomp
+  name = gets.delete!("\n")
   #while the name is not empty, repeat this code
   while !name.empty?
     puts "Now enter the cohort for the new student."
     puts "Which cohort is the new student?"
-    cohort = gets.chomp
+    cohort = gets.delete!("\n")
 
     while (cohort.downcase.match(/(january?|february?|march?|april?|may?|june?|july?|august?|september?|october?|november?|december?)/)) == nil do
       puts "Your answer was #{cohort}"
       puts "Please try again"
       puts "------------------------"
-      cohort = gets.chomp
+      cohort = gets.delete!("\n")
     end
 
     cohort = cohort.capitalize.to_sym
@@ -36,26 +36,26 @@ def input_students
     puts "Please enter another student name" if @students.length != 0
     puts "To finish, please press return twice" if @students.length != 0
 
-    name = gets.chomp
+    name = gets.delete!("\n")
   end
 
   # Asking if they want to filter the names by the first letter
   puts "Do you want to see the students with a name that starts with a specific letter?"
   puts "Please respond Yes or No."
-  @user_response = gets.chomp
+  @user_response = gets.delete!("\n")
 
   while (@user_response.downcase.match(/^[yes|no]+$/)) == nil do
     puts "Your response was #{user_response}"
     puts "Please answer Yes or No. No other resonse is accepted"
     puts @user_response.downcase.chomp =~ /yes\b|no/
-    @user_response = gets.chomp
+    @user_response = gets.delete!("\n")
   end
 
   # return @students if @user_response.downcase == "no"
   return @students if @user_response.downcase == "no"
   puts "Which letter?" if @user_response.downcase == "yes"
 
-  @letter = gets.chomp
+  @letter = gets.delete!("\n")
 
   while (@letter.length != 1 || @letter[/[a-z]|[A-Z]/] == nil) do
     puts "Only ONE letter of the ALPHABET is accepted "
@@ -124,8 +124,8 @@ end
 cohort_array.flatten!
 
 cohort_array.each.with_index(1) { |x, index|
-  puts "#{index}. #{x[:name]} (#{x[:cohort]} cohort)"
-  puts "Born in: #{x[:birthplace]}. Height: #{x[:height]}. Hobbies: #{x[:hobbies]}. "
+  puts "#{index}. #{x[:name]} (#{x[:cohort]} cohort)".center(50)
+  puts "Born in: #{x[:birthplace]}. Height: #{x[:height]}. Hobbies: #{x[:hobbies]}. ".center(60)
 }
 
 
