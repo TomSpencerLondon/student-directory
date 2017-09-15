@@ -45,7 +45,7 @@ def input_students
   @user_response = gets.delete!("\n")
 
   while (@user_response.downcase.match(/^[yes|no]+$/)) == nil do
-    puts "Your response was #{user_response}"
+    puts "Your response was #{@user_response}"
     puts "Please answer Yes or No. No other resonse is accepted"
     puts @user_response.downcase.chomp =~ /yes\b|no/
     @user_response = gets.delete!("\n")
@@ -79,8 +79,8 @@ end
 
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy" if @students.count > 0
+  puts "-------------" 
 end
 
 def print_students_list
@@ -110,7 +110,7 @@ end
   # end
 
 else
-
+if !@students.empty?
 new_array = []
 @students.each{|hash| new_array << hash[:cohort]}
 month_array = new_array.uniq
@@ -127,7 +127,9 @@ cohort_array.each.with_index(1) { |x, index|
   puts "#{index}. #{x[:name]} (#{x[:cohort]} cohort)".center(50)
   puts "Born in: #{x[:birthplace]}. Height: #{x[:height]}. Hobbies: #{x[:hobbies]}. ".center(60)
 }
-
+else
+  return []
+end
 
 # cohort_array = @students.select{|hash| hash[:cohort] == "November".downcase}
 #
@@ -165,7 +167,8 @@ end
 
 
 def print_footer
- puts "Overall, we have #{@students.count} great #{student_singular(@students.count)}."
+ puts "Overall, we have #{@students.count} great #{student_singular(@students.count)}." if @students.count > 0
+ puts "You have entered no students" if @students.count == 0
 end
 
 students = input_students
