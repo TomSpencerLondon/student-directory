@@ -13,11 +13,29 @@ def input_students
   #get the first name
   name = gets.chomp
   #while the name is not empty, repeat this code
-  while !name.empty? do
+  while !name.empty?
+    puts "Now enter the cohort for the new student."
+    puts "Which cohort is the new student?"
+    cohort = gets.chomp
+
+    while (cohort.downcase.match(/(january?|february?|march?|april?|may?|june?|july?|august?|september?|october?|november?|december?)/)) == nil do
+      puts "Your answer was #{cohort}"
+      puts "Please try again"
+      puts "------------------------"
+      cohort = gets.chomp
+    end
+
+    cohort = cohort.capitalize.to_sym
+    cohort = :November if cohort.empty?
+
+
     #add the student hash to the array
-    @students << {name: name, cohort: :november, hobbies: :music, birthplace: :London, height: 1.90}
+    @students << {name: name, cohort: cohort, hobbies: :music, birthplace: :London, height: 1.90}
     puts "Now we have #{@students.count} students"
     #get another name from the user
+    puts "Please enter another student name" if @students.length != 0
+    puts "To finish, please press return twice" if @students.length != 0
+
     name = gets.chomp
   end
 
