@@ -66,9 +66,10 @@ def input_students
 
 # students.select{ |x| x[:name][0].downcase == letter.downcase}
 
-p @letter
-p @user_response_final = @user_response.downcase
+@user_response_final = @user_response.downcase
 #returns the students array
+blinding.pry
+# @cohort_array = @students.group_by {|x| x[:cohort]}
 
 end
 
@@ -104,15 +105,37 @@ end
   # end
 
 else
-  count_student = @students.length
-  index = 0
-  while count_student > 0
-  newIndex = "#{index}".to_i
-  puts "#{index+1}. #{@students[newIndex][:name]} (#{@students[newIndex][:cohort]} cohort)".center(50)
-  puts "Born in: #{@students[newIndex][:birthplace]}. Height: #{@students[newIndex][:height]}. Hobbies: #{@students[newIndex][:hobbies]}".center(60)
-  count_student = count_student - 1
-  index = index + 1
-  end
+
+new_array = []
+@students.each{|hash| new_array << hash[:cohort]}
+month_array = new_array.uniq
+count = 0
+cohort_array = []
+while count < month_array.length do
+  cohort_array << @students.select{|hash| hash[:cohort] == month_array[count]}
+  count = count + 1
+end
+
+cohort_array.flatten!
+
+cohort_array.each.with_index(1) { |x, index|
+  puts "#{index}. #{x[:name]} (#{x[:cohort]} cohort)"
+  puts "Born in: #{x[:birthplace]}. Height: #{x[:height]}. Hobbies: #{x[:hobbies]}. "
+}
+
+
+# cohort_array = @students.select{|hash| hash[:cohort] == "November".downcase}
+#
+#
+#   count_student = cohort_array.length
+#   index = 0
+#   while count_student > 0
+#   newIndex = "#{index}".to_i
+#   puts "#{index+1}. #{cohort_array[newIndex][:name]} (#{cohort_array[newIndex][:cohort]} cohort)".center(50)
+#   puts "Born in: #{cohort_array[newIndex][:birthplace]}. Height: #{cohort_array[newIndex][:height]}. Hobbies: #{cohort_array[newIndex][:hobbies]}".center(60)
+#   count_student = count_student - 1
+#   index = index + 1
+#   end
 
   # @students.each.with_index do |student, index|
   #   puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
