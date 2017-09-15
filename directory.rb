@@ -31,7 +31,7 @@ def input_students
 
     #add the student hash to the array
     @students << {name: name, cohort: cohort, hobbies: :music, birthplace: :London, height: 1.90}
-    puts "Now we have #{@students.count} students"
+    puts "Now we have #{@students.count} #{student_singular(@students.count)}"
     #get another name from the user
     puts "Please enter another student name" if @students.length != 0
     puts "To finish, please press return twice" if @students.length != 0
@@ -72,6 +72,11 @@ blinding.pry
 # @cohort_array = @students.group_by {|x| x[:cohort]}
 
 end
+
+def student_singular(count)
+  if count == 1 then "student" else "students" end
+end
+
 
 def print_header
   puts "The students of Villains Academy"
@@ -160,7 +165,7 @@ end
 
 
 def print_footer
- puts "Overall, we have #{@students.count} great students"
+ puts "Overall, we have #{@students.count} great #{student_singular(@students.count)}."
 end
 
 students = input_students
