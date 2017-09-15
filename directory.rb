@@ -61,13 +61,12 @@ end
 
 def print_students_list
 if @user_response_final == "yes"
-  # selected = @students.map{|item| item.values}.flatten.select{ |chosen| chosen.to_s.chars.first.downcase == @letter.downcase }
 
 selected = @students.select{|hash| hash[:name].chars.first.downcase == @letter.downcase}
 
 selected.each.with_index(1) do |item, index|
-  puts "#{index}. #{item[:name]} (#{item[:cohort]} cohort)"
-  puts "Born in: #{item[:birthplace]}. Hobbies: #{item[:hobbies]}. Height: #{item[:height]}"
+  puts "#{index}. #{item[:name]} (#{item[:cohort]} cohort)".center(50)
+  puts "Born in: #{item[:birthplace]}. Hobbies: #{item[:hobbies]}. Height: #{item[:height]}".center(60)
 end
 
 
@@ -91,8 +90,8 @@ else
   index = 0
   while count_student > 0
   newIndex = "#{index}".to_i
-  puts "#{index+1}. #{@students[newIndex][:name]} (#{@students[newIndex][:cohort]} cohort)"
-  puts "Born in: #{@students[newIndex][:birthplace]}. Height: #{@students[newIndex][:height]}. Hobbies: #{@students[newIndex][:hobbies]}"
+  puts "#{index+1}. #{@students[newIndex][:name]} (#{@students[newIndex][:cohort]} cohort)".center(50)
+  puts "Born in: #{@students[newIndex][:birthplace]}. Height: #{@students[newIndex][:height]}. Hobbies: #{@students[newIndex][:hobbies]}".center(60)
   count_student = count_student - 1
   index = index + 1
   end
