@@ -5,6 +5,15 @@ require "pry"
   @user_response = ""
   @user_response_final = ""
 
+def add_to_array(name, cohort)
+  #add the student hash to the array
+  @students << {name: name, cohort: cohort, hobbies: :music, birthplace: :London, height: 1.90}
+  puts "Now we have #{@students.count} #{student_singular(@students.count)}"
+  #get another name from the user
+  puts "Please enter another student name" if @students.length != 0
+  puts "To finish, please press return twice" if @students.length != 0
+end
+
 def try_load_students
   filename = ARGV.first #first argument from the command line
   return if filename.nil? #get out of the method if it isn't given
@@ -21,7 +30,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-      @students << {name: name, cohort: cohort.to_sym}
+    add_to_array(name, cohort)
     end
     file.close
 end
@@ -62,6 +71,7 @@ def process(selection)
       input_students
       #input the students
     when "2"
+      load_students
       show_students
     when "3"
       save_students
@@ -106,11 +116,7 @@ def input_students
 
 
     #add the student hash to the array
-    @students << {name: name, cohort: cohort, hobbies: :music, birthplace: :London, height: 1.90}
-    puts "Now we have #{@students.count} #{student_singular(@students.count)}"
-    #get another name from the user
-    puts "Please enter another student name" if @students.length != 0
-    puts "To finish, please press return twice" if @students.length != 0
+    add_to_array(name, cohort)
 
     name = STDIN.gets.delete!("\n")
   end
