@@ -251,4 +251,5 @@ def print_footer
  puts "You have entered no students" if @students.count == 0
 end
 
+try_load_students
 interactive_menu
