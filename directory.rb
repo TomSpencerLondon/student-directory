@@ -5,8 +5,20 @@ require "pry"
   @user_response = ""
   @user_response_final = ""
 
-def load_students
-  file = File.open("students.csv", "r")
+def try_load_students
+  filename = ARGV.first #first argument from the command line
+  return if filename.nil? #get out of the method if it isn't given
+  if File.exists?(filename) #if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else #if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit #quit the program
+  end
+end
+
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
       @students << {name: name, cohort: cohort.to_sym}
@@ -65,7 +77,7 @@ def process(selection)
 def interactive_menu
   loop do
   print_menu
-  process(gets.chomp)
+  process(STDIN.gets.delete!("\n"))
   end
 end
 
@@ -75,18 +87,18 @@ def input_students
   #create an empty array
 
   #get the first name
-  name = gets.delete!("\n")
+  name = STDIN.gets.delete!("\n")
   #while the name is not empty, repeat this code
   while !name.empty?
     puts "Now enter the cohort for the new student."
     puts "Which cohort is the new student?"
-    cohort = gets.delete!("\n")
+    cohort = STDIN.gets.delete!("\n")
 
     while (cohort.downcase.match(/(january?|february?|march?|april?|may?|june?|july?|august?|september?|october?|november?|december?)/)) == nil do
       puts "Your answer was #{cohort}"
       puts "Please try again"
       puts "------------------------"
-      cohort = gets.delete!("\n")
+      cohort = STDIN.gets.delete!("\n")
     end
 
     cohort = cohort.capitalize.to_sym
@@ -100,31 +112,31 @@ def input_students
     puts "Please enter another student name" if @students.length != 0
     puts "To finish, please press return twice" if @students.length != 0
 
-    name = gets.delete!("\n")
+    name = STDIN.gets.delete!("\n")
   end
 
   # Asking if they want to filter the names by the first letter
   puts "Do you want to see the students with a name that starts with a specific letter?"
   puts "Please respond Yes or No."
-  @user_response = gets.delete!("\n")
+  @user_response = STDIN.gets.delete!("\n")
 
   while (@user_response.downcase.match(/^[yes|no]+$/)) == nil do
     puts "Your response was #{@user_response}"
     puts "Please answer Yes or No. No other resonse is accepted"
     puts @user_response.downcase.chomp =~ /yes\b|no/
-    @user_response = gets.delete!("\n")
+    @user_response = STDIN.gets.delete!("\n")
   end
 
   # return @students if @user_response.downcase == "no"
   return @students if @user_response.downcase == "no"
   puts "Which letter?" if @user_response.downcase == "yes"
 
-  @letter = gets.delete!("\n")
+  @letter = STDIN.gets.delete!("\n")
 
   while (@letter.length != 1 || @letter[/[a-z]|[A-Z]/] == nil) do
     puts "Only ONE letter of the ALPHABET is accepted "
     puts "No other character is allowed "
-    @letter = gets.chomp
+    @letter = STDIN.gets.chomp
     @letter = @letter.downcase
   end
 
