@@ -2,9 +2,6 @@ require "pry"
 
   @students = []
 
-  @letter = ""
-  @user_response = ""
-
   def print_menu
     puts "---------------------------"
     puts "What would you like to do?"
@@ -33,11 +30,14 @@ def process(selection)
         show_students
       when "3"
         puts "You chose option 3"
-        puts "Please input the filename"
-        save_students
+        puts "Please name the file you want to save otherwise we will use the default file"
+        file = gets.chomp
+        save_students(file)
       when "4"
         puts "You chose option 4"
-        load_students
+        puts "What filename to load? Please enter a current file otherwise we will load the default file name"
+        filename = gets.chomp
+        load_students(filename)
       when "9"
         puts "You chose option 9"
         exit
@@ -71,39 +71,60 @@ def show_students
 end
 
 def print_header
-  puts "The students of Villains Academy" if @students.count > 0
-  puts "--------------------------------"
+  puts "****************************************************"
+  puts "The students of Villains Academy".center(50) if @students.count > 0
+  puts "--------------------------------".center(50)
 end
 
 def print_student_list
-  @students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  @students.each.with_index(1) do |student, index|
+    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
   end
 end
 
 def print_footer
-  puts "Overall, we have #{@students.count} great students"
+  puts "Overall, we have #{@students.count} great students".center(50)
+  puts "****************************************************".center(50)
 end
 
-def save_students
-  #open the file for writing
-  file = File.open("students.csv", "w")
-  #iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+def save_students(file)
+  if File.exists?(file)
+      file = File.open(file, "w") do |file|
+    #iterate over the array of students
+      @students.each do |student|
+        student_data = [student[:name], student[:cohort]]
+        csv_line = student_data.join(",")
+        file.puts csv_line
+      end
+    end
+    #open the file for writing
+    else
+    file = File.open("students.csv", "w") do |file|
+    #iterate over the array of students
+      @students.each do |student|
+        student_data = [student[:name], student[:cohort]]
+        csv_line = student_data.join(",")
+        file.puts csv_line
+      end
+    end
   end
-  file.close
 end
 
-def load_students(filename = "students.csv")
+def load_students(filename)
+  if File.exists?(filename)
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     add_to_array(name)
   end
-  file.close
+  else
+    file = File.open("students.csv", "r") do |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      add_to_array(name)
+    end
+  end
+  end
 end
 
 def try_load_students
