@@ -1,4 +1,3 @@
-require "pry"
 require "csv"
   @students = []
 
@@ -7,8 +6,8 @@ require "csv"
     puts "What would you like to do?"
     puts "1. Input the students"
     puts "2. Show the students"
-    puts "3. Save the list to students.csv"
-    puts "4. Load the list from students.csv"
+    puts "3. Save the list"
+    puts "4. Load the list"
     puts "9. Exit"
     puts "---------------------------"
   end
@@ -21,6 +20,7 @@ require "csv"
   end
 
 def process(selection)
+    ARGV.clear
     case selection
       when "1"
         puts "You chose option 1"
@@ -30,14 +30,10 @@ def process(selection)
         show_students
       when "3"
         puts "You chose option 3"
-        puts "Please name the file you want to save otherwise we will use the default file"
-        file = gets.chomp
-        save_students(file)
+        save_students
       when "4"
         puts "You chose option 4"
-        puts "What filename to load? Please enter a current file otherwise we will load the default file name"
-        filename = gets.chomp
-        load_students(filename)
+        load_students
       when "9"
         puts "You chose option 9"
         exit
@@ -87,59 +83,52 @@ def print_footer
   puts "****************************************************".center(50)
 end
 
-def save_students(file)
+
+
+def save_students
+  file = ""
+  puts "Please name the file you want to save otherwise we will use the default file"
+  filename = gets.chomp
   if File.exists?(file)
-      CSV.open(file, "w") do |file|
-    #iterate over the array of students
-      @students.each do |student|
-        student_data = [student[:name], student[:cohort]]
-        CSV.foreach(file) do |row|
-        csv_line = student_data.join(",")
-        file.puts csv_line
-      end
-      end
-    end
-    #open the file for writing
-    else
-    CSV.open("students.csv", "w") do |file|
-    #iterate over the array of students
-      @students.each do |student|
-        student_data = [student[:name], student[:cohort]]
-        CSV.foreach("students.csv") do |row|
-        csv_line = student_data.join(",")
-        file.puts csv_line
-        end
-      end
+    file = filename
+  #open the file for writing
+  else
+  file = File.open("students.csv", "w")
+  #iterate over the array of students
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
     end
   end
+  file.close
 end
 
-def load_students(filename)
+def load_students(filename = "students.csv")
+  file = ""
+  puts "What filename to load? Please enter a current file otherwise we will load the default file name"
+  filename = gets.chomp
   if File.exists?(filename)
-    CSV.open(filename, "r") do |file|
-        CSV.foreach(filename) do |row|
-          name, cohort = row
-          add_to_array(name)
-        end
-    end
+    file = filename
   else
-    CSV.open("students.csv", "r") do |file|
-      CSV.foreach("students.csv") do |row|
-        name, cohort = row
-        add_to_array(name)
-      end
-    end
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",")
+    @students << {name: name, cohort: cohort.to_sym}
   end
+end
+  file.close
 end
 
 def try_load_students
-  filename = "students.csv" #first argument from the command line
-  load_students(filename) if filename.nil? #get out of the method if it isn't given
+  filename = ARGV.first #first argument from the command line
+  return if filename.nil? #get out of the method if it isn't given
   if File.exists?(filename) #if it exists
     load_students(filename)
     puts "Loaded#{@students.count} from #{filename}"
-  else #if it doesn't exist
-    load_students
+  else
+    puts "Sorry #{filename} does not exist"
+    exit
   end
 end
 
