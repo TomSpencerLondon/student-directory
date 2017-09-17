@@ -27,7 +27,7 @@ def process(selection)
         input_students
       when "2"
         puts "You chose option 2."
-        show_students
+        ask_filter
       when "3"
         puts "You chose option 3"
         save_students
@@ -58,6 +58,42 @@ def input_students
     #get another name from the user
     name = STDIN.gets.chomp
   end
+end
+
+def ask_filter
+  #Asking if user wants to filter the names by the first letter
+  puts "Do you want to see the students with a name that starts with a specific letter?"
+  puts "Please respond Yes or No."
+  user_response = gets.chomp
+  while(user_response.downcase.match(/^[yes|no]+$/)) == nil do
+    puts "Your response was #{user_response}"
+    puts "Please answer Yes or No. No other response is accepted"
+    user_response = gets.chomp
+  end
+  show_students if user_response.downcase == "no"
+  filter_letter_choice if user_response.downcase == "yes"
+end
+
+def filter_letter_choice
+puts "Which letter?"
+letter = gets.chomp
+  while(letter.downcase.match(/^[a-z]|[A-Z]/)) == nil do
+    puts "Your response was #{letter}"
+    puts "Please enter a letter. No other character is allowed"
+    letter = gets.chomp
+  end
+  new_array = @students.select{|x| x[:name][0].downcase == letter.downcase}
+  filtered_list(letter, new_array)
+end
+
+def filtered_list(letter, new_array)
+  puts "*********************************************************"
+  puts "Here are the students starting with the letter #{letter}".center(50)
+  puts "---------------------------------------------------------"
+  new_array.each.with_index(1) do |student, index|
+    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
+  end
+  puts "In total, there are #{new_array.count} students starting with the letter #{letter}"
 end
 
 def show_students
