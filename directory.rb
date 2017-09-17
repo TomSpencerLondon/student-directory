@@ -70,7 +70,7 @@ def ask_filter
     puts "Please answer Yes or No. No other response is accepted"
     user_response = gets.chomp
   end
-  show_students if user_response.downcase == "no"
+  length_print_choice if user_response.downcase == "no"
   filter_letter_choice if user_response.downcase == "yes"
 end
 
@@ -108,6 +108,38 @@ def print_header
   puts "--------------------------------".center(50)
 end
 
+def length_print_choice
+  puts "Do you want to filter out names more than 12 characters long?"
+  puts "Please respond Yes or No."
+  user_response = gets.chomp
+  while(user_response.downcase.match(/^[yes|no]+$/)) == nil do
+    puts "Your response was #{user_response}"
+    puts "Please answer Yes or No. No other response is accepted"
+    user_response = gets.chomp
+  end
+  show_students if user_response.downcase == "no"
+   filter_length if user_response.downcase == "yes"
+end
+
+def filter_length
+  new_arr = @students.reject{|x| x[:name].length > 12}
+  print_filter_length(new_arr)
+end
+
+def print_filter_length(new_arr)
+  puts "*******************************************************************"
+  if new_arr == true
+  puts "This is the list of students with names less than 12 characters long".center(50)
+      new_arr.each.with_index(1) do |student, index|
+        puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
+      end
+  else
+    puts "We have #{new_arr.count} students with names less than 12 characters long".center(50)
+  end
+    puts "We have #{@students.count - new_arr.count} students with names more than 12 characters long".center(50)
+    puts "------------------------------------------------------------------"
+end
+
 def print_student_list
   @students.each.with_index(1) do |student, index|
     puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
@@ -118,8 +150,6 @@ def print_footer
   puts "Overall, we have #{@students.count} great students".center(50)
   puts "****************************************************".center(50)
 end
-
-
 
 def save_students
   file = ""
