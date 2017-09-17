@@ -1,5 +1,5 @@
 require "pry"
-
+require "csv"
   @students = []
 
   def print_menu
@@ -89,22 +89,26 @@ end
 
 def save_students(file)
   if File.exists?(file)
-      file = File.open(file, "w") do |file|
+      CSV.open(file, "w") do |file|
     #iterate over the array of students
       @students.each do |student|
         student_data = [student[:name], student[:cohort]]
+        CSV.foreach(file) do |row|
         csv_line = student_data.join(",")
         file.puts csv_line
+      end
       end
     end
     #open the file for writing
     else
-    file = File.open("students.csv", "w") do |file|
+    CSV.open("students.csv", "w") do |file|
     #iterate over the array of students
       @students.each do |student|
         student_data = [student[:name], student[:cohort]]
+        CSV.foreach("students.csv") do |row|
         csv_line = student_data.join(",")
         file.puts csv_line
+        end
       end
     end
   end
@@ -112,18 +116,19 @@ end
 
 def load_students(filename)
   if File.exists?(filename)
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    add_to_array(name)
-  end
-  else
-    file = File.open("students.csv", "r") do |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(",")
-      add_to_array(name)
+    CSV.open(filename, "r") do |file|
+        CSV.foreach(filename) do |row|
+          name, cohort = row
+          add_to_array(name)
+        end
     end
-  end
+  else
+    CSV.open("students.csv", "r") do |file|
+      CSV.foreach("students.csv") do |row|
+        name, cohort = row
+        add_to_array(name)
+      end
+    end
   end
 end
 
