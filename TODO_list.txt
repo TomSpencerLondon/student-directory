@@ -19,14 +19,14 @@ Done
 - add separate add_to_array method
 - modify program to print students whose name begins with a specific letter
 - modify to print only students with names shorter than 12 characters
+- rewrite each() method in print_students_list to while loop
 
 Doing
 
-- rewrite each() method in print_students_list to while loop
+- add more information (hobbies, country of birth, height, etc.)
 
 Back Log
 
-- add more information (hobbies, country of birth, height, etc.)
 - print users grouped by cohorts
 - add singular for footer
 - Find replacement for chomp()

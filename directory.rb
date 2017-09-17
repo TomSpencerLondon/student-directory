@@ -141,8 +141,16 @@ def print_filter_length(new_arr)
 end
 
 def print_student_list
-  @students.each.with_index(1) do |student, index|
-    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
+  # @students.each.with_index(1) do |student, index|
+  #   puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
+  # end
+  count_student = @students.length
+  index = 0
+  while count_student > 0
+    new_index = "{index}".to_i
+    puts "#{index + 1}. #{@students[new_index][:name]} (#{@students[new_index][:cohort]} cohort)."
+    count_student = count_student - 1
+    index = index + 1
   end
 end
 
