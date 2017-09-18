@@ -196,8 +196,12 @@ def print_student_list
   print_footer
 end
 
+def student_singular(count)
+  if count == 1 then "student" else "students" end
+end
+
 def print_footer
-  puts "Overall, we have #{@students.count} great students".center(50)
+  puts "Overall, we have #{@students.count} great #{student_singular(@students.count)} ".center(50)
   puts "****************************************************".center(50)
 end
 
