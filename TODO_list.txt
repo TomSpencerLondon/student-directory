@@ -20,13 +20,14 @@ Done
 - modify program to print students whose name begins with a specific letter
 - modify to print only students with names shorter than 12 characters
 - rewrite each() method in print_students_list to while loop
+- stop double loading students for print on screen
 
 Doing
 
-- stop double loading students for print on screen
+- add more information (hobbies, country of birth, height, etc.)
 
 Back Log
-- add more information (hobbies, country of birth, height, etc.)
+
 - print users grouped by cohorts
 - add singular for footer
 - Find replacement for chomp()

@@ -44,8 +44,8 @@ def process(selection)
 end
 
 
-def add_to_array(name, cohort)
-  @students << {name: name, cohort: cohort}
+def add_to_array(name, cohort, hobby, birthplace)
+  @students << {name: name, cohort: cohort, hobby: hobby, birthplace: birthplace}
 end
 
 def input_students
@@ -66,8 +66,17 @@ def input_students
       cohort = gets.chomp
     end
 
+    puts "What is #{name}'s main hobby?"
+    hobby = gets.chomp
+
+    puts "Please enter #{name}'s birthplace"
+    birthplace = gets.chomp
+
+    puts "You entered #{name} for the #{cohort} cohort."
+    puts "#{name}'s hobby: #{hobby}"
+    puts "#{name}'s birthplace: #{birthplace}"
     #add the student hash to the array
-    add_to_array(name, cohort)
+    add_to_array(name, cohort, hobby, birthplace)
     puts "Now we have #{@students.count} students"
     #get another name from the user
     name = STDIN.gets.chomp
@@ -108,6 +117,7 @@ def filtered_list(letter, new_array)
   puts "---------------------------------------------------------"
   new_array.each.with_index(1) do |student, index|
     puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
+    puts "Born in: #{student[:birthplace]}. Hobbies: #{student[:hobbies]}. Height: #{student[:hobbies]}".center(50)
   end
   puts "In total, there are #{new_array.count} students starting with the letter #{letter}"
 end
@@ -147,6 +157,7 @@ def print_filter_length(new_arr)
   puts "This is the list of students with names less than 12 characters long".center(50)
       new_arr.each.with_index(1) do |student, index|
         puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
+        puts "Born in: #{student[:birthplace]}. Hobbies: #{student[:hobby]}. Height: #{student[:height]}".center(50)
       end
   else
     puts "We have #{new_arr.count} students with names less than 12 characters long".center(50)
@@ -161,14 +172,14 @@ def print_student_list
   # end
   array = []
   @students.each do |student|
-    array << [student[:name], student[:cohort]]
+    array << [student[:name], student[:cohort], student[:hobby], student[:height]]
   end
   final_print = array.uniq
   count_student = final_print.length
   index = 0
   while count_student > 0
     new_index = "{index}".to_i
-    puts "#{index + 1}. #{final_print[new_index][new_index]} (#{final_print[new_index][new_index + 1]} cohort)."
+    puts "#{index + 1}. #{final_print[new_index][new_index]} (#{final_print[new_index][new_index + 1]} cohort).".center(50)
     count_student = count_student - 1
     index = index + 1
   end
@@ -191,8 +202,8 @@ def save_students
   file = File.open("students.csv", "w")
   #iterate over the array of students
     @students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
+      student_data = [student[:name], student[:cohort], student[:hobby], student[:birthplace], student[:height]]
+      csv_line = student_data.join(", ")
       file.puts csv_line
     end
   end
@@ -208,8 +219,8 @@ def load_students(filename = "students.csv")
   else
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-          @students << {name: name, cohort: cohort.to_sym}
+    name, cohort, hobby, birthplace, height  = line.chomp.split(",")
+          @students << {name: name, cohort: cohort, hobby: hobby, birthplace: birthplace, height: height}
     end
   end
   file.close
