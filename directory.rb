@@ -1,4 +1,5 @@
 require "csv"
+require "pry"
   @students = []
 
   def print_menu
@@ -43,8 +44,8 @@ def process(selection)
 end
 
 
-def add_to_array(name)
-  @students << {name: name, cohort: :november}
+def add_to_array(name, cohort)
+  @students << {name: name, cohort: cohort}
 end
 
 def input_students
@@ -52,13 +53,28 @@ def input_students
   puts "To finish, just hit return twice"
   name = STDIN.gets.chomp
   while !name.empty? do
+    puts "For which cohort?"
+    cohort = gets.chomp
+    while (cohort.downcase.match(/(january|february|march|april|may|june|july|august|september|october|november|december)/)) == nil
+      #exiting loop if cohort is empty
+      puts "The default cohort will be November" if cohort.empty?
+      add_to_array(name, :november) if cohort.empty?
+      puts "Your response was #{cohort}"
+      puts "Please put the full month"
+      puts "----------------------------------"
+      puts "Please type the cohort again"
+      cohort = gets.chomp
+    end
+
     #add the student hash to the array
-    add_to_array(name)
+    add_to_array(name, cohort)
     puts "Now we have #{@students.count} students"
     #get another name from the user
     name = STDIN.gets.chomp
   end
 end
+
+
 
 def ask_filter
   #Asking if user wants to filter the names by the first letter
@@ -99,7 +115,6 @@ end
 def show_students
   print_header
   print_student_list
-  print_footer
 end
 
 def print_header
@@ -144,18 +159,24 @@ def print_student_list
   # @students.each.with_index(1) do |student, index|
   #   puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
   # end
-  count_student = @students.length
+  array = []
+  @students.each do |student|
+    array << [student[:name], student[:cohort]]
+  end
+  final_print = array.uniq
+  count_student = final_print.length
   index = 0
   while count_student > 0
     new_index = "{index}".to_i
-    puts "#{index + 1}. #{@students[new_index][:name]} (#{@students[new_index][:cohort]} cohort)."
+    puts "#{index + 1}. #{final_print[new_index][new_index]} (#{final_print[new_index][new_index + 1]} cohort)."
     count_student = count_student - 1
     index = index + 1
   end
+  print_footer(final_print)
 end
 
-def print_footer
-  puts "Overall, we have #{@students.count} great students".center(50)
+def print_footer(final_print)
+  puts "Overall, we have #{final_print.count} great students".center(50)
   puts "****************************************************".center(50)
 end
 
@@ -188,9 +209,9 @@ def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+          @students << {name: name, cohort: cohort.to_sym}
+    end
   end
-end
   file.close
 end
 

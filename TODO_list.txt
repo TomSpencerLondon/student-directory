@@ -23,10 +23,10 @@ Done
 
 Doing
 
-- add more information (hobbies, country of birth, height, etc.)
+- stop double loading students for print on screen
 
 Back Log
-
+- add more information (hobbies, country of birth, height, etc.)
 - print users grouped by cohorts
 - add singular for footer
 - Find replacement for chomp()
