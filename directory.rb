@@ -51,10 +51,10 @@ end
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = STDIN.gets.chomp
+  name = STDIN.gets.delete!("\n")
   while !name.empty? do
     puts "For which cohort?"
-    cohort = gets.chomp
+    cohort = gets.delete!("\n")
     while (cohort.downcase.match(/(january|february|march|april|may|june|july|august|september|october|november|december)/)) == nil
       #exiting loop if cohort is empty
       puts "The default cohort will be November" if cohort.empty?
@@ -63,17 +63,17 @@ def input_students
       puts "Please put the full month"
       puts "----------------------------------"
       puts "Please type the cohort again"
-      cohort = gets.chomp
+      cohort = gets.delete!("\n")
     end
 
     puts "What is #{name}'s main hobby?"
-    hobby = gets.chomp
+    hobby = gets.delete!("\n")
 
     puts "Please enter #{name}'s birthplace"
-    birthplace = gets.chomp
+    birthplace = gets.delete!("\n")
 
     puts "Please enter #{name}'s height"
-    height = gets.chomp
+    height = gets.delete!("\n")
 
     puts "You entered #{name} for the #{cohort} cohort."
     puts "#{name}'s hobby: #{hobby}"
@@ -83,7 +83,7 @@ def input_students
     add_to_array(name, cohort, hobby, birthplace, height)
     puts "Now we have #{@students.count} students"
     #get another name from the user
-    name = STDIN.gets.chomp
+    name = STDIN.gets.delete!("\n")
   end
 end
 
@@ -93,11 +93,11 @@ def ask_filter
   #Asking if user wants to filter the names by the first letter
   puts "Do you want to see the students with a name that starts with a specific letter?"
   puts "Please respond Yes or No."
-  user_response = gets.chomp
+  user_response = gets.delete!("\n")
   while(user_response.downcase.match(/^[yes|no]+$/)) == nil do
     puts "Your response was #{user_response}"
     puts "Please answer Yes or No. No other response is accepted"
-    user_response = gets.chomp
+    user_response = gets.delete!("\n")
   end
   length_print_choice if user_response.downcase == "no"
   filter_letter_choice if user_response.downcase == "yes"
@@ -109,7 +109,7 @@ letter = gets.chomp
   while(letter.downcase.match(/^[a-z]|[A-Z]/)) == nil do
     puts "Your response was #{letter}"
     puts "Please enter a letter. No other character is allowed"
-    letter = gets.chomp
+    letter = gets.delete!("\n")
   end
   new_array = @students.select{|x| x[:name][0].downcase == letter.downcase}
   filtered_list(letter, new_array)
@@ -140,11 +140,11 @@ end
 def length_print_choice
   puts "Do you want to filter out names more than 12 characters long?"
   puts "Please respond Yes or No."
-  user_response = gets.chomp
+  user_response = gets.delete!("\n")
   while(user_response.downcase.match(/^[yes|no]+$/)) == nil do
     puts "Your response was #{user_response}"
     puts "Please answer Yes or No. No other response is accepted"
-    user_response = gets.chomp
+    user_response = gets.delete!("\n")
   end
   show_students if user_response.downcase == "no"
    filter_length if user_response.downcase == "yes"
@@ -217,7 +217,7 @@ def save_students
   #iterate over the array of students
     @students.each do |student|
       student_data = [student[:name], student[:cohort], student[:hobby], student[:birthplace], student[:height]]
-      csv_line = student_data.join(", ")
+      csv_line = student_data.join(",")
       file.puts csv_line
     end
   end
@@ -232,10 +232,10 @@ def load_students(filename = "students.csv")
   if File.exists?(filename)
     file = filename
   else
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-    name, cohort, hobby, birthplace, height  = line.chomp.split(",")
-          @students << {name: name, cohort: cohort, hobby: hobby, birthplace: birthplace, height: height}
+  file = File.read("students.csv", "r")
+  file.each do |row|
+    name, cohort, hobby, birthplace, height  = row[0], row[1], row[2], row[3], row[4]
+    add_to_array(name, cohort, hobby, birthplace, height)
     end
   end
   file.close

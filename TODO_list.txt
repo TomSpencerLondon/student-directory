@@ -21,16 +21,18 @@ Done
 - modify to print only students with names shorter than 12 characters
 - rewrite each() method in print_students_list to while loop
 - stop double loading students for print on screen
+- add more information (hobbies, country of birth, height, etc.)
+- print users grouped by cohorts
+-resolve print of hobbies
+- add singular for footer
+- Find replacement for chomp()
 
 Doing
 
-- add more information (hobbies, country of birth, height, etc.)
+- resolve issue of saving array entries to csv file 
 
 Back Log
 
-- print users grouped by cohorts
-- add singular for footer
-- Find replacement for chomp()
 - add if/else control to only print list of at least 1 student in there
 - default upload of students.csv if no argument given at start up
 
