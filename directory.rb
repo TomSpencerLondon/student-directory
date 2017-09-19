@@ -58,6 +58,7 @@ def input_students
     while (cohort.downcase.match(/(january|february|march|april|may|june|july|august|september|october|november|december)/)) == nil
       #exiting loop if cohort is empty
       puts "The default cohort will be November" if cohort.empty?
+
       add_to_array(name, :november) if cohort.empty?
       puts "Your response was #{cohort}"
       puts "Please put the full month"
@@ -87,14 +88,12 @@ def input_students
   end
 end
 
-
-
 def ask_filter
   #Asking if user wants to filter the names by the first letter
   puts "Do you want to see the students with a name that starts with a specific letter?"
   puts "Please respond Yes or No."
   user_response = gets.delete!("\n")
-  while(user_response.downcase.match(/^[yes|no]+$/)) == nil do
+  while(user_response.downcase.match(/(yes|no)/)) == nil do
     puts "Your response was #{user_response}"
     puts "Please answer Yes or No. No other response is accepted"
     user_response = gets.delete!("\n")
@@ -223,12 +222,10 @@ def save_students
     file = filename
   #open the file for writing
   else
-    file = CSV.open("students.csv", "w") do |file|
+    CSV.open("students.csv", "a+") do |csv|
     #iterate over the array of students
       @students.each do |student|
-        student_data = [student[:name], student[:cohort], student[:hobby], student[:birthplace], student[:height]]
-        csv_line = student_data.join(",")
-        file.puts csv_line
+        csv << [student[:name], student[:cohort], student[:hobby], student[:birthplace], student[:height]]
       end
     end
   end
@@ -236,17 +233,18 @@ end
 
 def load_students(filename = "students.csv")
   @students.clear
+
   file = ""
   puts "What filename to load? Please enter a current file otherwise we will load the default file name"
   filename = gets.chomp
   if File.exists?(filename)
     file = filename
   else
-    file = CSV.read("students.csv")
-    file.each do |row|
-      name, cohort, hobby, birthplace, height  = row[0], row[1], row[2], row[3], row[4]
-      add_to_array(name, cohort, hobby, birthplace, height)
-    end
+      CSV.foreach("students.csv") do |row|
+        name, cohort, hobby, birthplace, height  = row[0], row[1], row[2], row[3], row[4]
+        add_to_array(name, cohort, hobby, birthplace, height)
+      end
+
   end
 end
 

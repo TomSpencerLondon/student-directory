@@ -26,16 +26,17 @@ Done
 -resolve print of hobbies
 - add singular for footer
 - Find replacement for chomp()
+- resolve issue of saving array entries to csv file
+- add if/else control to only print list of at least 1 student in there
+- default upload of students.csv if no argument given at start up
+- Translate numbers to words
+- resolve overwriting of csv file when saving list
 
 Doing
 
-- resolve issue of saving array entries to csv file 
-
+- print both lines from csv file to show students
 Back Log
 
-- add if/else control to only print list of at least 1 student in there
-- default upload of students.csv if no argument given at start up
 
 EXTRA:
 - resolve repetition of students with ID number
-- Translate numbers to words
