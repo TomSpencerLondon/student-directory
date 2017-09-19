@@ -200,8 +200,18 @@ def student_singular(count)
   if count == 1 then "student" else "students" end
 end
 
+def translate(n)
+    if 0 <= n && n <= 19
+      %w(zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen)[n]
+    elsif n % 10 == 0
+      %w(zero ten twenty thirty forty fifty sixty seventy eighty ninety)[n/10]
+    else
+      "#{translate n/10*10}-#{translate n%10}".downcase
+    end.capitalize
+end
+
 def print_footer
-  puts "Overall, we have #{@students.count} great #{student_singular(@students.count)} ".center(50)
+  puts "Overall, we have #{translate(@students.count)} great #{student_singular(@students.count)} ".center(50)
   puts "****************************************************".center(50)
 end
 
@@ -213,15 +223,15 @@ def save_students
     file = filename
   #open the file for writing
   else
-  file = File.open("students.csv", "w")
-  #iterate over the array of students
-    @students.each do |student|
-      student_data = [student[:name], student[:cohort], student[:hobby], student[:birthplace], student[:height]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+    file = CSV.open("students.csv", "w") do |file|
+    #iterate over the array of students
+      @students.each do |student|
+        student_data = [student[:name], student[:cohort], student[:hobby], student[:birthplace], student[:height]]
+        csv_line = student_data.join(",")
+        file.puts csv_line
+      end
     end
   end
-  file.close
 end
 
 def load_students(filename = "students.csv")
@@ -232,13 +242,12 @@ def load_students(filename = "students.csv")
   if File.exists?(filename)
     file = filename
   else
-  file = File.read("students.csv", "r")
-  file.each do |row|
-    name, cohort, hobby, birthplace, height  = row[0], row[1], row[2], row[3], row[4]
-    add_to_array(name, cohort, hobby, birthplace, height)
+    file = CSV.read("students.csv")
+    file.each do |row|
+      name, cohort, hobby, birthplace, height  = row[0], row[1], row[2], row[3], row[4]
+      add_to_array(name, cohort, hobby, birthplace, height)
     end
   end
-  file.close
 end
 
 def try_load_students
